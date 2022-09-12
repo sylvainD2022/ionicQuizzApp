@@ -1,0 +1,38 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Open Trivia
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="content" >
+  
+    <div  [hidden]="ishiddenForm">
+    
+      <label>Entrez votre Pseudo : </label>
+      <input name="pseudo" type="text" placeholder="aucun pseudo" [(ngModel)]="pseudo">
+      <label class="error" [hidden]="errorHidden"> le pseudo doit avoir au moins TROIS caractères</label>
+      <br><br>
+      
+      <select [(ngModel)]= "diff">
+        <option *ngFor="let difficulte of difficultes"  >{{ difficulte }}</option>
+      </select>
+    <br><br> 
+      <button (click)=valider()>valider le pseudo</button>
+    </div>
+    <label *ngIf="pseudo.length >3 && this.questionHidden == false" for="bienvenue">bienvenue {{ pseudo }}</label>
+    <div [hidden]="questionHidden">
+      <p class="question">{{question}}</p>
+      <button class="reponse" name="A" (click)="repondre()">A</button>
+      <button class="reponse" name="B" (click)="repondre()">B</button>
+      <button class="reponse" name="C" (click)="repondre()">C</button>
+      <button class="reponse" name="D" (click)="repondre()">D</button>
+    
+    </div>
+    <div [hidden]="suivantBtnHide">
+      <button (click)="nextQ()">question suivante</button>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,7 @@
+{
+  "name": "TPModule4",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
