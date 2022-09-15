@@ -6,33 +6,40 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <div class="content" >
-  
-    <div  [hidden]="ishiddenForm">
-    
-      <label>Entrez votre Pseudo : </label>
-      <input name="pseudo" type="text" placeholder="aucun pseudo" [(ngModel)]="pseudo">
-      <label class="error" [hidden]="errorHidden"> le pseudo doit avoir au moins TROIS caractères</label>
-      <br><br>
-      
-      <select [(ngModel)]= "diff">
-        <option *ngFor="let difficulte of difficultes"  >{{ difficulte }}</option>
-      </select>
-    <br><br> 
-      <button (click)=valider()>valider le pseudo</button>
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div *ngIf="!hideForm">
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating">Votre pseudo</ion-label>
+        <ion-input type="text" [(ngModel)]="pseudo"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Difficulté</ion-label>
+        <ion-select [(ngModel)]="difficulty">
+          <ion-select-option *ngFor="let diff of difficulties">{{ diff }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-toggle></ion-toggle> Sauvegarder mes informations
+      </ion-item>
+      <ion-button expand="full" (click)="begin()">Commencer</ion-button>
+    </ion-list>
+  </div>
+
+  <div *ngIf="hideForm">
+    <ion-text color="primary">Bienvenue {{ pseudo }}</ion-text>
+    <h1 class="ion-text-center" [innerHTML]="currentQuestion.question"></h1>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6" *ngFor="let response of currentQuestion.answers">
+          <ion-button expand="full" class="ion-text-wrap" [ngClass]="{'good': nextQuestion && response.correct, 'bad': nextQuestion && !response.correct, 'unknow': !nextQuestion}" (click)="answer(response)">{{ response.answer }}</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <div *ngIf="nextQuestion && !endGame">
+      <ion-button expand="full" (click)="loadNextQuestion()">Question suivante</ion-button>
     </div>
-    <label *ngIf="pseudo.length >3 && this.questionHidden == false" for="bienvenue">bienvenue {{ pseudo }}</label>
-    <div [hidden]="questionHidden">
-      <p class="question">{{question}}</p>
-      <button class="reponse" name="A" (click)="repondre()">A</button>
-      <button class="reponse" name="B" (click)="repondre()">B</button>
-      <button class="reponse" name="C" (click)="repondre()">C</button>
-      <button class="reponse" name="D" (click)="repondre()">D</button>
-    
-    </div>
-    <div [hidden]="suivantBtnHide">
-      <button (click)="nextQ()">question suivante</button>
-    </div>
+    <ion-button *ngIf="endGame" expand="full" (click)="playAgain()">Rejouer</ion-button>
+
   </div>
 </ion-content>
